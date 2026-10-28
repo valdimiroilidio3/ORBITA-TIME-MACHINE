@@ -45,6 +45,10 @@ npm run db:seed -- --demo     # utilizadores + leads de demonstração + 1 proje
 npm run dev                   # http://localhost:3000
 ```
 
+Em desenvolvimento e na pré-visualização, `/` entra **automaticamente** no dashboard com o
+operador administrador (`ORBITA_DEV_AUTOLOGIN`, ativo por omissão fora de produção). Em produção
+esta rota responde 404 e `/` redireciona para `/login` — verificado no build de produção.
+
 Credenciais iniciais (definidas em `.env`):
 
 - **admin** — `ORBITA_ADMIN_EMAIL` / `ORBITA_ADMIN_PASSWORD` (default `admin@orbita.pt`)
@@ -179,6 +183,7 @@ Artefactos em `data/artifacts/<time_machine_id>/`.
 | `ORBITA_ADMIN_EMAIL` / `ORBITA_ADMIN_PASSWORD` | operador inicial |
 | `ORBITA_MEMBER_EMAIL` / `ORBITA_MEMBER_PASSWORD` | membro de equipa |
 | `ORBITA_DATA_DIR` | diretório de dados (SQLite + artefactos) |
+| `ORBITA_DEV_AUTOLOGIN` | entrada automática no dashboard fora de produção (default: ativo em dev, sempre inativo em produção) |
 | `AI_PROVIDER` | `auto` \| `openai` \| `anthropic` \| `local` |
 | `AI_API_KEY`, `AI_BASE_URL`, `AI_MODEL`, `AI_MAX_OUTPUT_TOKENS`, `AI_TIMEOUT_MS` | fornecedor de IA |
 | `CAPTURE_ENABLED`, `CAPTURE_NAV_TIMEOUT_MS`, `CAPTURE_MAX_PAGES`, `CAPTURE_MAX_BYTES` | captura |

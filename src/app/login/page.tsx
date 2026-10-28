@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/current-user";
+import { config } from "@/lib/config";
 import { ensureSeedUsers } from "@/lib/auth";
 import { LoginForm } from "@/components/LoginForm";
 import { BrandMark } from "@/components/ui";
@@ -46,7 +47,12 @@ export default async function LoginPage() {
           </div>
           <h2 className="font-display text-[22px] font-semibold tracking-[-0.02em] text-orbita-ink">Entrar no sistema</h2>
           <p className="mt-1.5 text-[13px] text-orbita-muted">Acesso reservado à equipa ORBITA.</p>
-          <LoginForm />
+          <LoginForm devAutoLogin={config.devAutoLogin} />
+          {config.devAutoLogin && (
+            <p className="mt-4 rounded border border-orbita-line bg-orbita-base px-3 py-2 font-mono text-[10.5px] leading-relaxed text-orbita-dim">
+              Ambiente de desenvolvimento: entrada automática ativa (ORBITA_DEV_AUTOLOGIN).
+            </p>
+          )}
         </div>
       </div>
     </div>

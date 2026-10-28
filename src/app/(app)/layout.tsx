@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { ensureSeedUsers } from "@/lib/auth";
-import { requireUser } from "@/lib/current-user";
+import { getCurrentUser } from "@/lib/current-user";
+import { config } from "@/lib/config";
 import { recoverStaleJobs } from "@/lib/jobs";
 import { BrandMark } from "@/components/ui";
 import { UserMenu } from "@/components/UserMenu";
@@ -8,7 +10,11 @@ import { UserMenu } from "@/components/UserMenu";
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   ensureSeedUsers();
   recoverStaleJobs();
-  const user = await requireUser();
+  const user = await getCurrentUser();
+  if (!user) {
+    // Em desenvolvimento/pré-visualização entra diretamente no dashboard.
+    redirect(config.devAutoLogin ? "/api/dev/login" : "/login");
+  }
 
   return (
     <div className="min-h-screen">

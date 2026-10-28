@@ -5,6 +5,16 @@ import type { Action } from "./auth";
 import { can } from "./auth";
 import type { User } from "./types";
 
+/** Constrói URLs absolutas respeitando proxies (x-forwarded-host/proto). */
+export function publicUrl(request: Request, path: string): URL {
+  const forwardedHost = request.headers.get("x-forwarded-host");
+  const host = forwardedHost ?? request.headers.get("host");
+  const forwardedProto = request.headers.get("x-forwarded-proto");
+  const proto = forwardedProto ?? (request.url.startsWith("https:") ? "https" : "http");
+  if (host) return new URL(path, `${proto}://${host}`);
+  return new URL(path, request.url);
+}
+
 export function json(data: unknown, status = 200): NextResponse {
   return NextResponse.json(data, { status });
 }

@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export function LoginForm() {
+export function LoginForm({ devAutoLogin = false }: { devAutoLogin?: boolean }) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -72,6 +72,11 @@ export function LoginForm() {
       <button type="submit" className="btn btn-primary w-full" disabled={busy}>
         {busy ? "A entrar…" : "Entrar"}
       </button>
+      {devAutoLogin && (
+        <a href="/api/dev/login" className="btn btn-ghost w-full">
+          Entrar como operador (desenvolvimento)
+        </a>
+      )}
       <p className="font-mono text-[10.5px] leading-relaxed text-orbita-dim">
         Credenciais iniciais definidas em <code>.env</code> (ORBITA_ADMIN_EMAIL / ORBITA_ADMIN_PASSWORD). Altera-as antes
         de expor o sistema.

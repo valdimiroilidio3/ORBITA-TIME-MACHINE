@@ -14,6 +14,7 @@ function bool(name: string, fallback: boolean): boolean {
 }
 
 const dataDir = path.resolve(process.env.ORBITA_DATA_DIR || "./data");
+const isProduction = process.env.NODE_ENV === "production";
 
 export const config = {
   dataDir,
@@ -23,7 +24,12 @@ export const config = {
   sessionSecret:
     process.env.ORBITA_SESSION_SECRET ||
     "orbita-dev-secret-do-not-use-in-production-8f2c1",
-  isProduction: process.env.NODE_ENV === "production",
+  isProduction,
+  /**
+   * Entrada automática no dashboard em desenvolvimento (nunca em produção).
+   * Desativar com ORBITA_DEV_AUTOLOGIN=false quando for preciso testar o login.
+   */
+  devAutoLogin: bool("ORBITA_DEV_AUTOLOGIN", !isProduction),
   admin: {
     email: (process.env.ORBITA_ADMIN_EMAIL || "admin@orbita.pt").toLowerCase(),
     password: process.env.ORBITA_ADMIN_PASSWORD || "orbita-time-machine",

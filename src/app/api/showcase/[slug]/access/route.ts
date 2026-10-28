@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { config } from "@/lib/config";
+import { publicUrl } from "@/lib/http";
 import { getTimeMachineBySlug } from "@/lib/repo";
 import {
   showCaseLinkState,
@@ -10,16 +11,6 @@ import {
 } from "@/lib/showcase";
 
 type Params = { params: Promise<{ slug: string }> };
-
-/** Constrói URLs absolutas respeitando proxies (x-forwarded-host). */
-function publicUrl(request: Request, path: string): URL {
-  const forwardedHost = request.headers.get("x-forwarded-host");
-  const host = forwardedHost ?? request.headers.get("host");
-  const forwardedProto = request.headers.get("x-forwarded-proto");
-  const proto = forwardedProto ?? (request.url.startsWith("https:") ? "https" : "http");
-  if (host) return new URL(path, `${proto}://${host}`);
-  return new URL(path, request.url);
-}
 
 /**
  * Troca o token do link privado por um cookie HttpOnly e redireciona para o
